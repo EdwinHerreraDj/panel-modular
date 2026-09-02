@@ -1,0 +1,59 @@
+
+.card-header {
+  @apply border-b border-neutral-200 dark:border-neutral-600 px-4 md:px-6 py-3;
+}
+.card {
+  @apply bg-white dark:bg-dark-2 rounded-lg border border-neutral-600;
+}
+
+.card-body {
+  @apply px-6 py-5;
+}
+
+select {
+  @apply rounded border-neutral-300 dark:border-neutral-600; 
+}
+
+.left-line {
+  &::before {
+    position: absolute;
+    content: "";
+    width: 4px;
+    height: 44px;
+    @apply bg-primary-600;
+    border-radius: 100px;
+    left: -1px;
+    top: 24px;
+    box-shadow: 2px 1px 7px 0px rgba(29, 128, 252, 0.60);
+  }
+}
+.line-bg {
+  &-primary {
+    &::before {
+      @apply bg-primary-600;
+      box-shadow: 2px 1px 7px 0px rgba(29, 128, 252, 0.60);
+    }
+  }
+  &-lilac {
+    &::before {
+      @apply bg-purple-600;
+      box-shadow: 2px 1px 7px 0px rgba(98, 33, 245, 0.60);
+    }
+  }
+  &-success {
+    &::before {
+      @apply bg-success-600;
+      box-shadow: 2px 1px 7px 0px rgba(1, 144, 99, 0.60);
+    }
+  }
+  &-warning {
+    &::before {
+      @apply bg-warning-600;
+      box-shadow: 2px 1px 7px 0px rgba(255, 131, 3, 0.60);
+    }
+  }
+}
+
+.text-secondary-light, span {
+  @apply text-[#4b5563] dark:text-neutral-200;
+}

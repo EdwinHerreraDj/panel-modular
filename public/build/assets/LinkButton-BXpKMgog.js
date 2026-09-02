@@ -1,0 +1,1 @@
+import{r as e,t}from"./app-BSGbbrdo.js";var n=t(),r={primary:`btn btn-primary`,outline:`btn btn-outline-primary`};function i({href:t,variant:i=`primary`,icon:a,children:o}){return(0,n.jsxs)(e,{href:t,className:`${r[i]} items-center gap-2 rounded-lg px-5 py-2.5 text-sm`,children:[a,o]})}export{i as t};

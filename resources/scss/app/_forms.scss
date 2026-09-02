@@ -1,0 +1,55 @@
+/* =============================================================================
+   Campos dentro de una tarjeta.
+
+   La plantilla define `.form-control` con `dark:bg-transparent`, que en modo
+   oscuro coincide exactamente con el fondo de `.card` (dark-2): los campos
+   desaparecían. Esta clase les da un fondo propio y un foco visible, sin tocar
+   la definición original ni afectar a las pantallas de acceso.
+   ========================================================================== */
+.field-control {
+    @apply bg-neutral-50 dark:border-neutral-600 dark:bg-dark-1;
+
+    &::placeholder {
+        @apply text-neutral-400 dark:text-neutral-500;
+    }
+
+    &:focus {
+        @apply border-primary-600 ring-0;
+    }
+}
+
+/* =============================================================================
+   Estados de validación de formularios.
+   Extiende .form-control de la plantilla sin alterar su definición original.
+   ========================================================================== */
+.form-control {
+    &.is-invalid {
+        @apply border-danger-500 focus:border-danger-500 focus:ring-danger-500;
+    }
+
+    &:disabled,
+    &[disabled] {
+        @apply cursor-not-allowed bg-neutral-100 dark:bg-neutral-800;
+    }
+}
+
+.invalid-feedback {
+    @apply mt-1.5 flex items-start gap-1 text-sm text-danger-600 dark:text-danger-400;
+}
+
+/* Mensaje de error general del formulario (credenciales, bloqueo por intentos...) */
+.form-alert {
+    @apply mb-5 flex items-start gap-3 rounded-xl border px-4 py-3 text-sm;
+
+    &.form-alert-danger {
+        @apply border-danger-200 bg-danger-50 text-danger-700 dark:border-danger-700 dark:bg-danger-900/30 dark:text-danger-200;
+    }
+
+    &.form-alert-success {
+        @apply border-success-200 bg-success-50 text-success-700 dark:border-success-700 dark:bg-success-900/30 dark:text-success-200;
+    }
+
+    &.form-alert-info {
+        @apply border-info-200 bg-info-50 text-info-700 dark:border-info-700 dark:bg-info-900/30 dark:text-info-200;
+    }
+}

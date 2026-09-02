@@ -1,0 +1,38 @@
+/* Home Eleven SCSS Start */
+.officer-slider {
+    &__content {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    &__thumb {
+        transition: 0.4s linear;
+    }
+
+    .slick-track {
+        display: flex;
+        align-items: center;
+    }
+
+    .slick-slide {
+        transition: 0.4s linear;
+
+        &.slick-current.slick-active {
+            padding: 14px 0;
+
+            .officer-slider__thumb {
+                transform: scale(1.4);
+            }
+
+            .officer-slider__content {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+
+    &__item {
+        height: 160px !important;
+    }
+}
+/* Home Eleven SCSS End */

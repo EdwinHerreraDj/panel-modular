@@ -1,0 +1,15 @@
+/* =============================================================================
+   Accesibilidad: foco visible coherente en toda el área privada.
+   ========================================================================== */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-primary-600 ring-offset-2 ring-offset-white dark:ring-offset-dark-2;
+}
+
+/* Salto al contenido principal para navegación por teclado */
+.skip-link {
+    @apply sr-only;
+
+    &:focus {
+        @apply not-sr-only fixed start-4 top-4 z-[100] rounded-lg bg-primary-600 px-4 py-2 text-white;
+    }
+}

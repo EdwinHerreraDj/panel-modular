@@ -1,0 +1,23 @@
+import type { Tone } from '@/types'
+
+interface StatusBadgeProps {
+    label: string
+    tone: Tone
+}
+
+const TONE_CLASSES: Record<Tone, string> = {
+    success: 'bg-success-100 text-success-700 dark:bg-success-600/25 dark:text-success-400',
+    warning: 'bg-warning-100 text-warning-700 dark:bg-warning-600/25 dark:text-warning-400',
+    danger: 'bg-danger-100 text-danger-700 dark:bg-danger-600/25 dark:text-danger-400',
+    info: 'bg-info-100 text-info-700 dark:bg-info-600/25 dark:text-info-400',
+    neutral: 'bg-neutral-200 text-neutral-700 dark:bg-neutral-600 dark:text-neutral-100',
+}
+
+/**
+ * Etiqueta de estado con la paleta de la plantilla.
+ */
+export default function StatusBadge({ label, tone }: StatusBadgeProps) {
+    return (
+        <span className={`rounded-full px-3 py-1 text-xs font-medium ${TONE_CLASSES[tone]}`}>{label}</span>
+    )
+}

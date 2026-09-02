@@ -1,0 +1,12 @@
+// ============================================================================
+// Punto de entrada de estilos del área privada.
+//
+// `./style` es el SCSS de la plantilla base WowDash, copiado sin modificar.
+// Todo lo propio del proyecto va en `./app/index` para no ensuciar la plantilla
+// y poder actualizarla en el futuro.
+// ============================================================================
+// Fuente de iconos de la plantilla (clases .ri-* y las flechas del menú lateral).
+@import '../vendor/remixicon/remixicon.css';
+
+@import './style';
+@import './app/index';

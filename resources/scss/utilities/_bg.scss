@@ -1,0 +1,48 @@
+.bg-light-pink {
+  background: linear-gradient(90deg, #F7E9FF 0.12%, #FDF8F7 99.89%);
+}
+
+/* Stroke Class */
+.stroke {
+  &-blue {
+    stroke: #487FFF !important;
+  }
+  &-red {
+    stroke: #EF4A00 !important;
+  }
+  &-warning {
+    stroke: #FF9F29 !important;
+  }
+  &-green {
+    stroke: #45B369 !important;
+  }
+}
+
+.bg-gradient-custom-1 {
+  background: linear-gradient(246deg, #B159FF 5.05%, #8B08FE 96.12%);
+}
+
+.bg-gradient-custom-2 {
+  background: linear-gradient(245deg, #7397FD 4.86%, #5077E5 96.35%);
+}
+
+.bg-gradient-custom-3 {
+  background: linear-gradient(245deg, #2FD8E4 3.97%, #04B4C0 96.86%);
+}
+
+.bg-gradient-custom-4 {
+  background: linear-gradient(250deg, #FFB359 3.29%, #FB9B29 96.24%);
+}
+
+.gradient-bg-chart::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 106px;
+  background: linear-gradient(90deg, rgba(156, 43, 255, 0.15) 0%, rgba(6, 207, 221, 0.15) 36.35%, rgba(91, 134, 255, 0.15) 70.54%, rgba(253, 164, 58, 0.15) 100%);
+  filter: blur(25px);
+  inset-block-end: 0;
+  z-index: -1;
+}
+
+/* Stroke Class */

@@ -1,0 +1,28 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 6
+
+    # Las pruebas se escriben con la API funcional de Pest, cuyo `$this` dinámico
+    # PHPStan no puede resolver. Se analiza el código de la aplicación.
+    paths:
+        - app
+        - config
+        - database
+        - routes
+        - modules
+
+    # La configuración de un módulo es configuración: `env()` en ella se
+    # evalúa al cachear, igual que en config/. Sin esto, larastan la trataría
+    # como código normal y la daría por rota.
+    configDirectories:
+        - config
+        - modules/*/config
+
+    excludePaths:
+        # Las pruebas de los módulos, por lo mismo que las del núcleo: Pest.
+        - modules/*/Tests/*
+        # Material de referencia: puede no estar en una copia del proyecto, y su
+        # ausencia no debe impedir el análisis. El `(?)` la marca como opcional.
+        - plantilla-base-diseño (?)

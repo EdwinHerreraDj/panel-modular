@@ -1,0 +1,724 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "API del blog de Alminares Panel",
+        "version": "1.0",
+        "description": "API de solo lectura para mostrar los artículos del blog en la web pública. Las claves de JSON van en español."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "ClaveApi": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-Key",
+                "description": "Clave generada desde el panel del blog."
+            }
+        }
+    },
+    "security": [
+        {
+            "ClaveApi": []
+        }
+    ],
+    "paths": {
+        "/estado": {
+            "get": {
+                "summary": "Estado de la API",
+                "description": "Comprueba que la API responde y cuántos artículos hay publicados. No pide clave, para poder vigilarla desde fuera.",
+                "operationId": "estado",
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "estado": "ok",
+                                    "version": "1.0",
+                                    "articulos_publicados": 37,
+                                    "hora": "2026-07-31T10:15:00+00:00"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sitio": {
+            "get": {
+                "summary": "Datos del sitio",
+                "description": "Nombre, lema, logotipos y SEO por defecto. Es lo que la web necesita para pintar la cabecera y el pie, tenga el contenido que tenga.",
+                "operationId": "sitio",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": {
+                                        "nombre": "Alminares",
+                                        "lema": "Novedades del sector",
+                                        "url_publica": "https://www.ejemplo.com",
+                                        "idioma": "es",
+                                        "logo": "https://ejemplo.com/storage/settings/logo.png",
+                                        "logo_oscuro": null,
+                                        "favicon": "https://ejemplo.com/storage/settings/favicon.png",
+                                        "seo": {
+                                            "titulo": "Alminares",
+                                            "descripcion": "Novedades, productos y consejos.",
+                                            "plantilla_titulo": ":title | Alminares",
+                                            "indexable": true,
+                                            "og_imagen": "https://ejemplo.com/storage/settings/og.jpg",
+                                            "twitter_card": "summary_large_image"
+                                        },
+                                        "organizacion": {
+                                            "nombre": "Alminares S.L.",
+                                            "redes": [
+                                                {
+                                                    "network": "instagram",
+                                                    "url": "https://instagram.com/alminares"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/blog": {
+            "get": {
+                "summary": "Datos del blog (heredado)",
+                "description": "Lo mismo que `/sitio` más `articulos_por_pagina`. Existe solo para no romper las webs que se conectaron cuando esto era únicamente un blog. **En una integración nueva usa `/sitio`.**",
+                "operationId": "blog",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": {
+                                        "nombre": "Alminares",
+                                        "lema": "Novedades del sector",
+                                        "url_publica": "https://www.ejemplo.com",
+                                        "idioma": "es",
+                                        "articulos_por_pagina": 12,
+                                        "logo": "https://ejemplo.com/storage/settings/logo.png",
+                                        "logo_oscuro": null,
+                                        "favicon": "https://ejemplo.com/storage/settings/favicon.png",
+                                        "seo": {
+                                            "titulo": "Alminares",
+                                            "descripcion": "Novedades, productos y consejos.",
+                                            "plantilla_titulo": ":title | Alminares",
+                                            "indexable": true,
+                                            "og_imagen": "https://ejemplo.com/storage/settings/og.jpg",
+                                            "twitter_card": "summary_large_image"
+                                        },
+                                        "organizacion": {
+                                            "nombre": "Alminares S.L.",
+                                            "redes": [
+                                                {
+                                                    "network": "instagram",
+                                                    "url": "https://instagram.com/alminares"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/articulos": {
+            "get": {
+                "summary": "Listado de artículos",
+                "description": "Artículos publicados, del más reciente al más antiguo. Solo sale lo que ya está publicado: un borrador o algo programado nunca aparece.",
+                "operationId": "articulos",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "pagina",
+                        "in": "query",
+                        "required": false,
+                        "description": "Número de página",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "por_pagina",
+                        "in": "query",
+                        "required": false,
+                        "description": "Artículos por página (máximo 50)",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "12"
+                    },
+                    {
+                        "name": "categoria",
+                        "in": "query",
+                        "required": false,
+                        "description": "Filtra por la dirección de una categoría",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "noticias"
+                    },
+                    {
+                        "name": "etiqueta",
+                        "in": "query",
+                        "required": false,
+                        "description": "Filtra por la dirección de una etiqueta",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "novedades"
+                    },
+                    {
+                        "name": "buscar",
+                        "in": "query",
+                        "required": false,
+                        "description": "Busca en título, extracto y contenido",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "pizza"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": [
+                                        {
+                                            "id": 12,
+                                            "titulo": "Cómo elegir la masa de tu pizza",
+                                            "slug": "como-elegir-la-masa-de-tu-pizza",
+                                            "extracto": "Fina, napolitana o de molde: en qué se diferencian y cuándo usar cada una.",
+                                            "minutos_lectura": 4,
+                                            "imagen_destacada": {
+                                                "alt": "Masa de pizza recién estirada sobre harina",
+                                                "miniatura": "https://ejemplo.com/storage/biblioteca/variantes/masa-thumbnail.jpg",
+                                                "mediana": "https://ejemplo.com/storage/biblioteca/variantes/masa-medium.jpg",
+                                                "grande": "https://ejemplo.com/storage/biblioteca/variantes/masa-large.jpg"
+                                            },
+                                            "autor": {
+                                                "nombre": "Lucía Ramos"
+                                            },
+                                            "categorias": [
+                                                {
+                                                    "nombre": "Recetas",
+                                                    "slug": "recetas"
+                                                }
+                                            ],
+                                            "etiquetas": [
+                                                {
+                                                    "nombre": "Masa",
+                                                    "slug": "masa"
+                                                }
+                                            ],
+                                            "seo": {
+                                                "titulo": "Cómo elegir la masa de tu pizza",
+                                                "descripcion": "Fina, napolitana o de molde: en qué se diferencian.",
+                                                "indexable": true,
+                                                "og_titulo": "Cómo elegir la masa de tu pizza",
+                                                "og_descripcion": "Fina, napolitana o de molde."
+                                            },
+                                            "publicado_en": "2026-07-14T09:00:00+00:00",
+                                            "actualizado_en": "2026-07-16T11:32:10+00:00"
+                                        }
+                                    ],
+                                    "paginacion": {
+                                        "pagina": 1,
+                                        "por_pagina": 12,
+                                        "total": 37,
+                                        "ultima_pagina": 4,
+                                        "hay_mas": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/articulos/{slug}": {
+            "get": {
+                "summary": "Un artículo",
+                "description": "El artículo completo con su contenido en HTML, ya limpio y seguro para insertar, además de sus relacionados.",
+                "operationId": "articulo",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "description": "Dirección del artículo",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": {
+                                        "id": 12,
+                                        "titulo": "Cómo elegir la masa de tu pizza",
+                                        "slug": "como-elegir-la-masa-de-tu-pizza",
+                                        "extracto": "Fina, napolitana o de molde: en qué se diferencian y cuándo usar cada una.",
+                                        "minutos_lectura": 4,
+                                        "imagen_destacada": {
+                                            "alt": "Masa de pizza recién estirada sobre harina",
+                                            "miniatura": "https://ejemplo.com/storage/biblioteca/variantes/masa-thumbnail.jpg",
+                                            "mediana": "https://ejemplo.com/storage/biblioteca/variantes/masa-medium.jpg",
+                                            "grande": "https://ejemplo.com/storage/biblioteca/variantes/masa-large.jpg"
+                                        },
+                                        "autor": {
+                                            "nombre": "Lucía Ramos"
+                                        },
+                                        "categorias": [
+                                            {
+                                                "nombre": "Recetas",
+                                                "slug": "recetas"
+                                            }
+                                        ],
+                                        "etiquetas": [
+                                            {
+                                                "nombre": "Masa",
+                                                "slug": "masa"
+                                            }
+                                        ],
+                                        "seo": {
+                                            "titulo": "Cómo elegir la masa de tu pizza",
+                                            "descripcion": "Fina, napolitana o de molde: en qué se diferencian.",
+                                            "indexable": true,
+                                            "og_titulo": "Cómo elegir la masa de tu pizza",
+                                            "og_descripcion": "Fina, napolitana o de molde."
+                                        },
+                                        "publicado_en": "2026-07-14T09:00:00+00:00",
+                                        "actualizado_en": "2026-07-16T11:32:10+00:00",
+                                        "contenido_html": "<p>La masa es la base de todo…</p><h2>Masa fina</h2><p>…</p>"
+                                    },
+                                    "relacionados": []
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    },
+                    "404": {
+                        "description": "No hay ningún artículo publicado con esa dirección"
+                    }
+                }
+            }
+        },
+        "/categorias": {
+            "get": {
+                "summary": "Categorías",
+                "description": "Categorías que tienen al menos un artículo publicado, en orden de presentación. Para el menú de la web.",
+                "operationId": "categorias",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": [
+                                        {
+                                            "nombre": "Recetas",
+                                            "slug": "recetas",
+                                            "descripcion": "Todo lo que se cocina en casa.",
+                                            "articulos": 14,
+                                            "seo": {
+                                                "titulo": "Recetas",
+                                                "descripcion": "Todo lo que se cocina en casa."
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/etiquetas": {
+            "get": {
+                "summary": "Etiquetas",
+                "description": "Etiquetas en uso, de la más usada a la menos.",
+                "operationId": "etiquetas",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": [
+                                        {
+                                            "nombre": "Masa",
+                                            "slug": "masa",
+                                            "articulos": 6
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/redirecciones": {
+            "get": {
+                "summary": "Redirecciones",
+                "description": "Direcciones antiguas que deben redirigir a las actuales, con un 301. Cárgalas al arrancar la web o cachéalas: van todas de una vez para no tener que preguntar en cada visita.",
+                "operationId": "redirecciones",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": [
+                                        {
+                                            "de": "como-elejir-la-masa",
+                                            "a": "como-elegir-la-masa-de-tu-pizza",
+                                            "codigo": 301,
+                                            "externa": false
+                                        }
+                                    ],
+                                    "total": 1
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/sitemap": {
+            "get": {
+                "summary": "Direcciones para el sitemap",
+                "description": "Todo lo publicado con su fecha de última modificación, para montar el sitemap.xml de la web. No devuelve XML: la estructura de direcciones la decide la web.",
+                "operationId": "sitemap",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "articulos": [
+                                        {
+                                            "slug": "como-elegir-la-masa-de-tu-pizza",
+                                            "modificado_en": "2026-07-16T11:32:10+00:00",
+                                            "publicado_en": "2026-07-14T09:00:00+00:00",
+                                            "indexable": true
+                                        }
+                                    ],
+                                    "categorias": [
+                                        {
+                                            "slug": "recetas",
+                                            "modificado_en": "2026-07-10T08:00:00+00:00"
+                                        }
+                                    ],
+                                    "etiquetas": [
+                                        {
+                                            "slug": "masa",
+                                            "modificado_en": "2026-07-10T08:00:00+00:00"
+                                        }
+                                    ],
+                                    "generado_en": "2026-07-31T10:15:00+00:00"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/productos": {
+            "get": {
+                "summary": "Listado de productos",
+                "description": "Los productos marcados como visibles, en el orden en que se han colocado en el panel. Lo que no está visible no sale ni conociendo su dirección.",
+                "operationId": "productos",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "pagina",
+                        "in": "query",
+                        "required": false,
+                        "description": "Número de página",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "por_pagina",
+                        "in": "query",
+                        "required": false,
+                        "description": "Productos por página",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "24"
+                    },
+                    {
+                        "name": "buscar",
+                        "in": "query",
+                        "required": false,
+                        "description": "Busca en nombre, referencia y resumen",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "roble"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": [
+                                        {
+                                            "id": 4,
+                                            "nombre": "Silla de roble macizo",
+                                            "slug": "silla-de-roble-macizo",
+                                            "referencia": "SR-2043",
+                                            "resumen": "Madera maciza, disponible en tres acabados.",
+                                            "precio": 119,
+                                            "precio_texto": "119,00 €",
+                                            "precio_anterior": 149,
+                                            "precio_anterior_texto": "149,00 €",
+                                            "descuento_porcentaje": 20,
+                                            "disponibilidad": "low",
+                                            "disponibilidad_texto": "Pocas unidades",
+                                            "imagen": {
+                                                "alt": "Silla de roble vista de frente",
+                                                "miniatura": "https://ejemplo.com/storage/biblioteca/variantes/silla-thumbnail.jpg",
+                                                "mediana": "https://ejemplo.com/storage/biblioteca/variantes/silla-medium.jpg",
+                                                "grande": "https://ejemplo.com/storage/biblioteca/variantes/silla-large.jpg"
+                                            },
+                                            "actualizado_en": "2026-08-19T10:12:00+00:00"
+                                        }
+                                    ],
+                                    "paginacion": {
+                                        "pagina": 1,
+                                        "por_pagina": 24,
+                                        "total": 37,
+                                        "ultima_pagina": 2,
+                                        "hay_mas": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    }
+                }
+            }
+        },
+        "/productos/{slug}": {
+            "get": {
+                "summary": "Un producto",
+                "description": "La ficha completa, con la descripción en HTML ya limpio y seguro para insertar.",
+                "operationId": "producto",
+                "security": [
+                    {
+                        "ClaveApi": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "description": "Dirección del producto",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Correcto",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "datos": {
+                                        "id": 4,
+                                        "nombre": "Silla de roble macizo",
+                                        "slug": "silla-de-roble-macizo",
+                                        "referencia": "SR-2043",
+                                        "resumen": "Madera maciza, disponible en tres acabados.",
+                                        "precio": 119,
+                                        "precio_texto": "119,00 €",
+                                        "precio_anterior": 149,
+                                        "precio_anterior_texto": "149,00 €",
+                                        "descuento_porcentaje": 20,
+                                        "disponibilidad": "low",
+                                        "disponibilidad_texto": "Pocas unidades",
+                                        "imagen": {
+                                            "alt": "Silla de roble vista de frente",
+                                            "miniatura": "https://ejemplo.com/storage/biblioteca/variantes/silla-thumbnail.jpg",
+                                            "mediana": "https://ejemplo.com/storage/biblioteca/variantes/silla-medium.jpg",
+                                            "grande": "https://ejemplo.com/storage/biblioteca/variantes/silla-large.jpg"
+                                        },
+                                        "actualizado_en": "2026-08-19T10:12:00+00:00",
+                                        "descripcion_html": "<p>Fabricada en roble macizo…</p>"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falta la clave o no es válida"
+                    },
+                    "403": {
+                        "description": "Clave revocada, caducada o dominio no permitido"
+                    },
+                    "429": {
+                        "description": "Límite de peticiones superado"
+                    },
+                    "404": {
+                        "description": "No hay ningún artículo publicado con esa dirección"
+                    }
+                }
+            }
+        }
+    }
+}

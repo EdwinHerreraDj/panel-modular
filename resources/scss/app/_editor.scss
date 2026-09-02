@@ -1,0 +1,92 @@
+/* =============================================================================
+   Contenido del editor de artículos.
+
+   Reproduce el aspecto que tendrá el texto en la web pública, para que quien
+   escribe vea lo que va a publicar.
+   ========================================================================== */
+.tiptap-content {
+    @apply min-h-[420px] px-5 py-4 text-neutral-700 dark:text-neutral-100;
+
+    &:focus {
+        @apply outline-none;
+    }
+
+    p {
+        @apply mb-4 leading-relaxed;
+
+        &:last-child {
+            @apply mb-0;
+        }
+    }
+
+    h2 {
+        @apply mt-8 mb-3 text-2xl font-semibold first:mt-0;
+    }
+
+    h3 {
+        @apply mt-6 mb-3 text-xl font-semibold first:mt-0;
+    }
+
+    h4 {
+        @apply mt-5 mb-2 text-lg font-semibold first:mt-0;
+    }
+
+    ul,
+    ol {
+        @apply mb-4 ps-6;
+    }
+
+    ul {
+        @apply list-disc;
+    }
+
+    ol {
+        @apply list-decimal;
+    }
+
+    li {
+        @apply mb-1;
+
+        p {
+            @apply mb-0;
+        }
+    }
+
+    blockquote {
+        @apply my-5 border-s-4 border-primary-600 ps-4 text-neutral-600 italic dark:text-neutral-300;
+    }
+
+    pre {
+        @apply my-5 overflow-x-auto rounded-lg bg-neutral-800 p-4 text-sm text-neutral-100;
+
+        code {
+            @apply bg-transparent p-0;
+        }
+    }
+
+    code {
+        @apply rounded bg-neutral-200 px-1.5 py-0.5 text-sm dark:bg-neutral-700;
+    }
+
+    a {
+        @apply text-primary-600 underline;
+    }
+
+    img {
+        @apply my-5 h-auto max-w-full rounded-lg;
+    }
+
+    hr {
+        @apply my-8 border-neutral-300 dark:border-neutral-600;
+    }
+
+    iframe {
+        @apply my-5 aspect-video h-auto w-full rounded-lg;
+    }
+
+    /* Texto de ayuda cuando el editor está vacío */
+    p.is-editor-empty:first-child::before {
+        content: attr(data-placeholder);
+        @apply pointer-events-none float-left h-0 text-neutral-400;
+    }
+}
