@@ -1,0 +1,1 @@
+import{t as e}from"./app-DVy1HJSC.js";var t=e();function n({id:e,message:n}){return n?(0,t.jsxs)(`p`,{id:e,className:`invalid-feedback`,role:`alert`,children:[(0,t.jsx)(`i`,{className:`ri-error-warning-line mt-px shrink-0 text-base leading-none`,"aria-hidden":`true`}),(0,t.jsx)(`span`,{children:n})]}):null}export{n as t};

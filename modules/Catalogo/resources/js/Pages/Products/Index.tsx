@@ -67,8 +67,12 @@ export default function ProductsIndex({
             header: 'Producto',
             align: 'start',
             sortable: true,
+            // El tope es lo que hace funcionar `truncate`: en una tabla la celda
+            // crece con su contenido, así que sin él un resumen de 255
+            // caracteres ensancha la columna entera en lugar de recortarse.
+            // Es el mismo ancho que usa la columna de título de los artículos.
             cell: (product: ProductListItem) => (
-                <div className="flex items-center gap-3">
+                <div className="flex max-w-[420px] items-center gap-3">
                     {product.thumbnail_url ? (
                         <img
                             src={product.thumbnail_url}

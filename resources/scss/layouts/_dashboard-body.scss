@@ -1,6 +1,13 @@
 /* === dashboard body css start === */
+/*
+ * Sin `flex-wrap`, a propósito. La plantilla lo traía, pero en una columna sin
+ * alto máximo nunca llega a partir nada y sí cambia cómo se mide el ancho: con
+ * él, el cuerpo se estira hasta lo que ocupe su contenido más ancho. Una tabla
+ * con `min-w-max` empujaba así toda la página fuera de la pantalla, y el
+ * `overflow-x-auto` de `.table-responsive` no llegaba a actuar nunca.
+ */
 .dashboard-main {
-  @apply ms-0 xl:ms-[13.75rem] 2xl:ms-[17.1875rem] 3xl:ms-[19.5rem] flex flex-wrap flex-col min-h-screen transition;
+  @apply ms-0 xl:ms-[13.75rem] 2xl:ms-[17.1875rem] 3xl:ms-[19.5rem] flex flex-col min-h-screen transition;
 }
 
 .dashboard-main-body {

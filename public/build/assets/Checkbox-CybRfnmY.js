@@ -1,1 +1,0 @@
-import{f as e,s as t,t as n}from"./app-BSGbbrdo.js";var r=e(t(),1),i=n();function a({label:e,...t}){let n=(0,r.useId)();return(0,i.jsxs)(`div`,{className:`flex items-center`,children:[(0,i.jsx)(`input`,{...t,id:n,type:`checkbox`,className:`form-check-input border border-neutral-300`}),(0,i.jsx)(`label`,{className:`ps-2`,htmlFor:n,children:e})]})}export{a as t};
