@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title inertia>{{ config('app.name') }}</title>
-    <link rel="icon" type="image/png" href="/images/favicon.png" sizes="16x16">
+    {{-- El favicon sale de Configuración; `AppServiceProvider` lo resuelve y
+         cae en el de la plantilla cuando no se ha subido ninguno. --}}
+    <link rel="icon" type="image/png" href="{{ $panelFavicon }}">
 
     {{-- Evita el parpadeo de tema claro antes de que React monte. --}}
     <script>

@@ -6,16 +6,19 @@ namespace App\Providers;
 
 use App\Http\Middleware\AuthenticateApiKey;
 use App\Models\ApiKey;
+use App\Models\Setting;
 use App\Models\User;
 use App\Support\PasswordRules;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -35,8 +38,28 @@ class AppServiceProvider extends ServiceProvider
         $this->configureNotifications();
         $this->configureAuthorization();
         $this->configureRateLimiting();
+        $this->configureFavicon();
 
         Vite::prefetch(concurrency: 3);
+    }
+
+    /**
+     * Favicon del panel, tomado de Configuración.
+     *
+     * Va en la vista raíz y no en las props de Inertia porque se pinta en el
+     * `<head>` antes de que monte React. Si no se ha subido ninguno se usa el
+     * de la plantilla.
+     */
+    private function configureFavicon(): void
+    {
+        View::composer('app', function (ViewContract $view): void {
+            $settings = Setting::current();
+
+            $view->with(
+                'panelFavicon',
+                $settings->imageUrl($settings->favicon_path) ?? '/images/favicon.png',
+            );
+        });
     }
 
     /**

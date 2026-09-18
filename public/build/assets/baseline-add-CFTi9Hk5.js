@@ -1,0 +1,1 @@
+import{f as e,s as t,t as n}from"./app-CY83nEH5.js";var r=e(t()),i=n(),a=(0,r.forwardRef)(({title:e,titleId:t,...n},r)=>(0,i.jsxs)(`svg`,{viewBox:`0 0 24 24`,width:`1.2em`,height:`1.2em`,ref:r,"aria-labelledby":t,...n,children:[e?(0,i.jsx)(`title`,{id:t,children:e}):null,(0,i.jsx)(`path`,{fill:`currentColor`,d:`M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z`})]}));export{a as t};

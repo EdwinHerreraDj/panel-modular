@@ -28,7 +28,11 @@ export default function AuthLayout({
     showLogo = false,
     children,
 }: AuthLayoutProps) {
-    const { flash } = usePage().props
+    const { flash, app } = usePage().props
+
+    // El de Configuración manda; si no hay, el de la plantilla.
+    const logo = app.logo ?? '/images/logo.png'
+    const logoOscuro = app.logo_dark ?? app.logo ?? '/images/logo-light.png'
 
     return (
         <>
@@ -46,8 +50,8 @@ export default function AuthLayout({
                         <div>
                             {showLogo && (
                                 <div className="mb-2.5 max-w-[290px]">
-                                    <img src="/images/logo.png" alt="" className="dark:hidden" />
-                                    <img src="/images/logo-light.png" alt="" className="hidden dark:block" />
+                                    <img src={logo} alt="" className="dark:hidden" />
+                                    <img src={logoOscuro} alt="" className="hidden dark:block" />
                                 </div>
                             )}
                             <h4 className="mb-3">{heading}</h4>

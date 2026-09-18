@@ -165,9 +165,13 @@ export default function ChangePassword({ forced, passwordPolicy, passwordChanged
                 <div className="flex min-h-[100vh] items-center justify-center bg-neutral-100 px-6 py-10 dark:bg-neutral-800">
                     <div className="w-full max-w-[560px]">
                         <div className="mb-6 text-center">
-                            <img src="/images/logo.png" alt={app.name} className="mx-auto mb-6 dark:hidden" />
                             <img
-                                src="/images/logo-light.png"
+                                src={app.logo ?? '/images/logo.png'}
+                                alt={app.name}
+                                className="mx-auto mb-6 dark:hidden"
+                            />
+                            <img
+                                src={app.logo_dark ?? app.logo ?? '/images/logo-light.png'}
                                 alt={app.name}
                                 className="mx-auto mb-6 hidden dark:block"
                             />

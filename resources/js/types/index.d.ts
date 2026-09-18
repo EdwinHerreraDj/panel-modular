@@ -130,7 +130,8 @@ export interface MenuGroup {
 
 /** Props compartidas por HandleInertiaRequests con todas las páginas. */
 export interface SharedPageProps {
-    app: { name: string }
+    /** `logo` y `logo_dark` a null significan «usa el de la plantilla». */
+    app: { name: string; logo: string | null; logo_dark: string | null }
     auth: { user: AuthUser | null; permissions: string[] }
     menu: MenuGroup[]
     flash: FlashMessages

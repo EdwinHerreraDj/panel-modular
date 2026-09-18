@@ -57,7 +57,12 @@ const icons: Record<string, ReactNode> = {
  * servidor y llegan por las props compartidas.
  */
 export default function Sidebar({ collapsed, mobileOpen, onClose }: SidebarProps) {
-    const { menu } = usePage().props
+    const { menu, app } = usePage().props
+
+    // El de Configuración manda; si no hay, el de la plantilla. Para el modo
+    // oscuro vale el logotipo normal cuando no se ha subido uno específico.
+    const logo = app.logo ?? '/images/logo.png'
+    const logoOscuro = app.logo_dark ?? app.logo ?? '/images/logo-light.png'
 
     return (
         <aside className={`sidebar ${collapsed ? 'active' : ''} ${mobileOpen ? 'sidebar-open' : ''}`}>
@@ -67,8 +72,8 @@ export default function Sidebar({ collapsed, mobileOpen, onClose }: SidebarProps
 
             <div>
                 <Link href={route('dashboard')} className="sidebar-logo">
-                    <img src="/images/logo.png" alt="Inicio" className="light-logo" />
-                    <img src="/images/logo-light.png" alt="Inicio" className="dark-logo" />
+                    <img src={logo} alt="Inicio" className="light-logo" />
+                    <img src={logoOscuro} alt="Inicio" className="dark-logo" />
                     <img src="/images/logo-icon.png" alt="Inicio" className="logo-icon" />
                 </Link>
             </div>

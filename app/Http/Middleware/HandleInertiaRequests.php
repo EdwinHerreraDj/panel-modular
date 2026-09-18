@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use App\Modules\MenuComposer;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -36,9 +37,19 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
 
-            'app' => [
-                'name' => config('app.name'),
-            ],
+            // El logotipo del panel sale de Configuración, no de los archivos de
+            // la plantilla: si el cliente sube el suyo, se ve aquí dentro y no
+            // solo en su web. Cuando no hay ninguno se manda null y el frontend
+            // cae en las imágenes de `public/images`.
+            'app' => function (): array {
+                $settings = Setting::current();
+
+                return [
+                    'name' => config('app.name'),
+                    'logo' => $settings->imageUrl($settings->logo_path),
+                    'logo_dark' => $settings->imageUrl($settings->logo_dark_path),
+                ];
+            },
 
             'auth' => [
                 'user' => $user === null ? null : [
