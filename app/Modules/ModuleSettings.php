@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules;
 
 use App\Modules\Values\ModuleSetting;
+use App\Support\ApiCache;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -84,6 +85,11 @@ final class ModuleSettings
         }
 
         $this->flush();
+
+        // Un ajuste de módulo puede cambiar lo que sirve la API —el número de
+        // WhatsApp de la tienda, por ejemplo—, igual que la configuración del
+        // sitio. Sin esto, la web lo vería tarde.
+        ApiCache::flush();
     }
 
     public function flush(): void

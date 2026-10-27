@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use App\Modules\Module;
+use App\Modules\ModuleRegistry;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Inertia\Testing\AssertableInertia;
 
@@ -15,12 +17,17 @@ beforeEach(function (): void {
 });
 
 /**
+ * @param  list<string|null>|null  $groups  Solo estos grupos, si se indican
  * @return list<string>
  */
-function menuLabels(AssertableInertia $page): array
+function menuLabels(AssertableInertia $page, ?array $groups = null): array
 {
     /** @var list<array{title: string|null, items: list<array{label: string}>}> $menu */
     $menu = $page->toArray()['props']['menu'];
+
+    if ($groups !== null) {
+        $menu = array_values(array_filter($menu, fn (array $group): bool => in_array($group['title'], $groups, true)));
+    }
 
     return array_merge(...array_map(
         fn (array $group): array => array_column($group['items'], 'label'),
@@ -43,7 +50,9 @@ it('enseña el menú del núcleo y del blog, en orden', function (): void {
 
             // Se ignora lo que aporten otros módulos —cada uno comprueba lo
             // suyo—, pero estas entradas tienen que estar y en este orden.
-            expect(array_values(array_intersect(menuLabels($page), $expected)))->toBe($expected);
+            // Solo se miran los grupos del núcleo y del blog: otro módulo puede
+            // tener también sus «Artículos» o sus «Categorías» en su grupo.
+            expect(menuLabels($page, [null, 'Blog', 'Herramientas', 'Administración']))->toBe($expected);
         });
 });
 
@@ -58,10 +67,14 @@ it('da un grupo propio a cada módulo y deja el primero sin título', function (
 
             // El panel, un grupo por módulo de contenido en el orden de
             // MODULES_ENABLED, lo que comparten todos, y la administración.
+            $modules = array_map(
+                fn (Module $module): string => $module->name(),
+                array_values(app(ModuleRegistry::class)->all()),
+            );
+
             expect(array_column($menu, 'title'))->toBe([
                 null,
-                'Blog',
-                'Catálogo',
+                ...$modules,
                 'Herramientas',
                 'Administración',
             ]);

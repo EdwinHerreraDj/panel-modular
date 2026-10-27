@@ -28,7 +28,7 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <!-- Módulos activos durante las pruebas. -->
-        <env name="MODULES_ENABLED" value="blog,catalogo"/>
+        <env name="MODULES_ENABLED" value="blog,catalogo,tienda"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>

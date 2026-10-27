@@ -1,1 +1,0 @@
-import{a as e,f as t,s as n}from"./app-CY83nEH5.js";var r=t(n(),1);function i(){let{auth:t}=e().props,n=t.user?.is_super_admin===!0,i=(0,r.useCallback)(e=>n||t.permissions.includes(e),[n,t.permissions]);return{can:i,canAny:(0,r.useCallback)(e=>e.some(e=>i(e)),[i]),isSuperAdmin:n}}export{i as t};

@@ -14,6 +14,8 @@ import IconHistory from '~icons/solar/history-outline'
 import IconRedirect from '~icons/solar/routing-2-outline'
 import IconBox from '~icons/solar/box-minimalistic-outline'
 import IconPuzzle from '~icons/solar/widget-add-outline'
+import IconStock from '~icons/solar/archive-outline'
+import IconSale from '~icons/solar/sale-outline'
 import IconDefault from '~icons/solar/widget-outline'
 
 interface SidebarProps {
@@ -48,6 +50,8 @@ const icons: Record<string, ReactNode> = {
     settings: <IconSettings className="menu-icon" />,
     box: <IconBox className="menu-icon" />,
     puzzle: <IconPuzzle className="menu-icon" />,
+    stock: <IconStock className="menu-icon" />,
+    sale: <IconSale className="menu-icon" />,
 }
 
 /**
